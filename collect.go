@@ -3,8 +3,9 @@ package bankid
 type CollectStatus string
 
 const (
-	Pending  CollectHintCode = "pending"
-	Complete                 = "complete"
+	Pending  CollectStatus = "pending"
+	Failed                 = "failed"
+	Complete               = "complete"
 )
 
 type CollectHintCode string

@@ -3,6 +3,7 @@ package bankid
 import (
 	"fmt"
 	"testing"
+	"time"
 )
 
 /*
@@ -21,6 +22,7 @@ Skostorlek: 	43
 */
 
 func TestConnect(t *testing.T) {
+	var err error
 	cert, err := ClientTestCert()
 	if err != nil {
 		t.Error("Failed to get client test certificate", err)
@@ -35,6 +37,18 @@ func TestConnect(t *testing.T) {
 		t.Error(err)
 	}
 	fmt.Printf("Token: %s, OrderRef: %s\n", signRes.AutoStartToken, signRes.OrderRef)
-	colResp, err := conn.Collect(signRes.OrderRef)
-	fmt.Printf("OrderRef: %s, Status: %s, HintCode: %s, CompletionData: %s\n", colResp.OrderRef, colResp.Status, colResp.HintCode, colResp.CompletionData)
+	var colResp *CollectResponse
+COLLECT:
+	time.Sleep(time.Second)
+	colResp, err = conn.Collect(signRes.OrderRef)
+	if err != nil {
+		t.Error(err)
+	}
+	fmt.Printf("OrderRef: %s, Status: %s, HintCode: %s, CompletionData: %+v\n", colResp.OrderRef, colResp.Status, colResp.HintCode, colResp.CompletionData)
+	if colResp.Status == Pending {
+		goto COLLECT
+	}
+	if colResp.CompletionData == nil {
+		t.Error(fmt.Errorf("No completion data received"))
+	}
 }
