@@ -62,6 +62,5 @@ func (c *Conn) Collect(orderRef string) (res *CollectResponse, err error) {
 	req := &CollectRequest{OrderRef: orderRef}
 	res = &CollectResponse{}
 	err = c.postJSON("/rp/v5/collect", req, res)
-
 	return
 }

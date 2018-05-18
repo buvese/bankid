@@ -88,6 +88,11 @@ b2AYu7wnrHioDWqP6DTkUSUeMB/zqWPM/qx6QNNOcaOcj
 A==
 -----END CERTIFICATE-----`
 
+// ClientTestCert needs the files testcert.pem and testkey.pem.
+// To create them, download the test certificate from www.bankid.com as a .pfx file
+// and then run for instance OpenSSL like this:
+//   openssl pkcs12 -in {CERT-FILENAME}.pfx -clcerts -nokeys -out testcert.pem
+//   openssl pkcs12 -in {CERT-FILENAME}.pfx -nocerts -nodes -out testkey.pem
 func ClientTestCert() (tls.Certificate, error) {
 	return tls.LoadX509KeyPair("testcert.pem", "testkey.pem")
 }

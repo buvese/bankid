@@ -9,8 +9,9 @@ type SignRequirement struct {
 }
 
 type SignRequest struct {
-	EndUserIP          string           `json:"endUserIp"`
-	PersonalNumber     string           `json:"personalNumber,omitempty"`
+	EndUserIP      string `json:"endUserIp"`
+	PersonalNumber string `json:"personalNumber,omitempty"`
+	// UserVisibleData needs to be base64 encoded
 	UserVisibleData    string           `json:"userVisibleData"`
 	UserNonVisibleData string           `json:"userNonVisibleData,omitempty"`
 	Requirement        *SignRequirement `json:"requirement,omitempty"`
@@ -24,6 +25,5 @@ type SignResponse struct {
 func (c *Conn) Sign(req *SignRequest) (res *SignResponse, err error) {
 	res = &SignResponse{}
 	err = c.postJSON("/rp/v5/sign", req, res)
-
 	return
 }
